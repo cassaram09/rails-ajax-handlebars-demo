@@ -37,7 +37,7 @@ class NotesController < ApplicationController
 
   def destroy
     @note.destroy
-    render :index
+    redirect_to notes_path
   end
 
   private

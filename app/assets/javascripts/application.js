@@ -14,3 +14,4 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require notes
+//= require handlebars-v4.0.5
