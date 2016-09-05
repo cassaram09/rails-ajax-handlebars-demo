@@ -1,4 +1,5 @@
 <h1>My Notes</h1>
+<h2> <%= link_to "New Note", new_note_path, class: "js-new-note" %>
 
 <hr></hr>
 
@@ -11,10 +12,10 @@
 
 <script id="noteTemplate" type="text/x-handlebars-template">
   <div class="note-template-js" id="{{id}}">
-    <h3> {{title}} </h3>
+    <h2>{{id}}. {{title}} </h2>
     <p class="note-content">{{content}}</p>
     <div class="inline-button">
-      <a href="/notes/{{id}}/edit" class="btn btn-sm btn-primary edit-note" id="{{id}}">Edit</a>
+      <a href="/notes/{{id}}/edit" class="btn btn-sm btn-primary js-edit-note" id="edit-note-{{id}}">Edit</a>
     </div>
     <div class="inline-button"> 
       <form class="button_to" method="post" action="/notes/{{id}}">

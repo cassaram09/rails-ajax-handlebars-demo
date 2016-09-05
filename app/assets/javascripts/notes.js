@@ -41,7 +41,7 @@ function getNote() {
 
 // GET Request the edit form for a Note
 function editNote() {
-  $(document).on("click", ".edit-note", function(event){
+  $(document).on("click", ".js-edit-note", function(event){
     event.preventDefault();
     var href = $(this).attr('href');
     $.ajax({
@@ -52,9 +52,9 @@ function editNote() {
       var note = new Note(data);
       var noteRender = note.renderEditNote();
       var id = '#' + data.id;
-      $(".notes #note-" + note.id).html(noteRender);
-      $(".notes #note-" + note.id + ' #note_title').val(note.title);
-      $(".notes #note-" + note.id + ' textarea').val(note.content);
+      $("#note-" + note.id).html(noteRender);
+      $("#note-" + note.id + ' #note_title').val(note.title);
+      $("#note-" + note.id + ' textarea').val(note.content);
     });
   });
 }
@@ -73,8 +73,8 @@ function updateNote() {
     }).success(function(data) {
       var note = new Note(data);
       var noteRender = note.renderNote();
-      $(".notes #note-" + note.id).html("");
-      $(".notes #note-" + note.id).append(noteRender);
+      $("#note-" + note.id).html("");
+      $("#note-" + note.id).append(noteRender);
     });
   }); 
 }
