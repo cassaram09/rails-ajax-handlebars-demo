@@ -44,4 +44,8 @@ class NotesController < ApplicationController
   def note_params
     params.require(:note).permit(:content, :title)
   end
+
+  def set_note
+    @note = Note.find_by(id: params[:id])
+  end
 end

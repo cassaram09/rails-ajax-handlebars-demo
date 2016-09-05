@@ -3,15 +3,15 @@
 <hr></hr>
 
 <% @notes.each do |note| %>
-  <h2> <%= note.id %>. <%= note.title %> </h2>
-  <p> <%= note.content %> </p>
-  <br/>
+  <div id="note-<%= note.id%>">
+    <h2> <%= note.id %>. <%= note.title %> <%= link_to "View", note_path(note), class: "js-get-note" %> </h2>
+    <br/>
+  </div>
 <% end %> 
 
 <script id="noteTemplate" type="text/x-handlebars-template">
   <div class="note-template-js" id="{{id}}">
     <h3> {{title}} </h3>
-    <p>Posted on {{createdAt}} by {{user}}</p>
     <p class="note-content">{{content}}</p>
     <div class="inline-button">
       <a href="/notes/{{id}}/edit" class="btn btn-sm btn-primary edit-note" id="{{id}}">Edit</a>

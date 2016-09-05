@@ -11,33 +11,11 @@ class Note {
     this.id = attributes.id;
     this.title = attributes.title;
     this.content = attributes.content;
-    this.createdAt = attributes.created_at;
-    this.user = attributes.user.name;
-    this.project = attributes.project.name;
-  }
-
-  // Display a formatted date
-  friendlyDate() {
-    var date = new Date(this.createdAt);
-    var friendlyDate = this.formatDate(date);
-    return friendlyDate;
-  }
-
-  // Format JS standard date
-  formatDate(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + " at " + strTime;
   }
 
   // Render the handlebars template
   renderNote() {
-    return noteTemplate({title: this.title, content: this.content, user: this.user, id: this.id, createdAt: this.friendlyDate()});
+    return noteTemplate(this);
   }
 
   renderEditNote(){
@@ -55,8 +33,8 @@ function getNote() {
     }).success(function(data) {
       var note = new Note(data);
       var noteRender = note.renderNote();
-      $(".notes #note-" + note.id).html("");
-      $(".notes #note-" + note.id).append(noteRender);
+      $("#note-" + note.id).html("");
+      $("#note-" + note.id).append(noteRender);
     });
   });
 }
