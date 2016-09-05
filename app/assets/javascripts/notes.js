@@ -1,7 +1,9 @@
 $(document).ready(function(){
   compileNoteTemplate();
+  compileNewNoteTemplate();
   compileEditNoteTemplate();
-  getNote();
+  newNote();
+  showNote();
   editNote();
   updateNote();
 });
@@ -18,12 +20,32 @@ class Note {
     return noteTemplate(this);
   }
 
+  renderNewNote(){
+    return newNoteTemplate(this);
+  }
+
   renderEditNote(){
     return editNoteTemplate(this);
   }
 }
 
-function getNote() {
+function newNote() {
+  $(document).on("click", '.js-new-note', function(event) {
+    event.preventDefault();
+    $.ajax({
+      url: $(event.target).attr('href'),
+      method: "GET",
+      dataType: 'JSON'
+    }).success(function(data) {
+      var note = new Note(data);
+      var noteRender = note.renderNewNote();
+      $("#new-note").html("");
+      $("#new-note").append(noteRender);
+    });
+  });
+}
+
+function showNote() {
   $(document).on("click", '.js-get-note', function(event) {
     event.preventDefault();
     $.ajax({
@@ -73,8 +95,7 @@ function updateNote() {
     }).success(function(data) {
       var note = new Note(data);
       var noteRender = note.renderNote();
-      $("#note-" + note.id).html("");
-      $("#note-" + note.id).append(noteRender);
+      $(".notes-block").prepend(noteRender);
     });
   }); 
 }
@@ -84,6 +105,13 @@ function compileNoteTemplate(){
   noteSource = $("#noteTemplate").html();
   if ( noteSource !== undefined ) {
     noteTemplate = Handlebars.compile(noteSource); 
+  }
+}
+
+function compileNewNoteTemplate(){
+  newNoteSource = $("#newNoteTemplate").html();
+  if ( newNoteSource !== undefined ) {
+    newNoteTemplate = Handlebars.compile(newNoteSource); 
   }
 }
 

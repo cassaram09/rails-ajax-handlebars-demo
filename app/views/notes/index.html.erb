@@ -1,14 +1,35 @@
 <h1>My Notes</h1>
 <h2> <%= link_to "New Note", new_note_path, class: "js-new-note" %>
 
+<div id="new-note">
+</div>
+
 <hr></hr>
 
+<div class="notes-block">
 <% @notes.each do |note| %>
   <div id="note-<%= note.id%>">
     <h2> <%= note.id %>. <%= note.title %> <%= link_to "View", note_path(note), class: "js-get-note" %> </h2>
     <br/>
   </div>
 <% end %> 
+</div>
+
+<script id="newNoteTemplate" type="text/x-handlebars-template">
+  <form class="new_note save-note" id="new_note" action="/notes/" accept-charset="UTF-8" method="post">
+    <input name="utf8" type="hidden" value="&#x2713;" />
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <div class="form-group"> 
+      <input placeholder="Title" class="form-control" type="text" name="note[title]" id="note_title">
+    </div>
+    <div class="form-group">  
+      <textarea class="note-text-field form-control" rows="3" name="note[content]" id="note_content"></textarea>
+    </div>  
+    <div class="form-group">
+      <input type="submit" name="commit" value="Create Note" class="btn btn-primary" />
+    </div>
+  </form>
+</script>
 
 <script id="noteTemplate" type="text/x-handlebars-template">
   <div class="note-template-js" id="{{id}}">
