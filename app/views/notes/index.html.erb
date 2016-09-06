@@ -17,19 +17,8 @@
 
 <script id="indexNoteTemplate" type="text/x-handlebars-template">
   <div class="note-template-js" id="note-{{id}}">
-    <h2>{{id}}. {{title}} </h2>
-    <p class="note-content">{{content}}</p>
-    <div class="inline-button">
-      <a href="/notes/{{id}}/edit" class="btn btn-sm btn-primary js-edit-note" id="edit-note-{{id}}">Edit</a>
-    </div>
-    <div class="inline-button"> 
-      <form class="button_to delete-note" method="post" action="/notes/{{id}}">
-        <input type="hidden" name="_method" value="delete" />
-        <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      </form>   
-    </div>
-    <div class="line-light"></div>
+    <h2>{{id}}. {{title}} <a href="notes/{{id}}" class="js-get-note">View</a></h2> 
+    <br/>
   </div>
 </script>
 
@@ -51,8 +40,19 @@
 
 <script id="showNoteTemplate" type="text/x-handlebars-template">
   <div class="note-template-js" id="note-{{id}}">
-    <h2>{{id}}. {{title}} <a href="notes/{{id}}" class="js-get-note">View</a></h2> 
-    <br/>
+    <h2>{{id}}. {{title}} </h2>
+    <p class="note-content">{{content}}</p>
+    <div class="inline-button">
+      <a href="/notes/{{id}}/edit" class="btn btn-sm btn-primary js-edit-note" id="edit-note-{{id}}">Edit</a>
+    </div>
+    <div class="inline-button"> 
+      <form class="button_to delete-note" method="post" action="/notes/{{id}}">
+        <input type="hidden" name="_method" value="delete" />
+        <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      </form>   
+    </div>
+    <div class="line-light"></div>
   </div>
 </script>
 

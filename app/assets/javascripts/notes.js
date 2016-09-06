@@ -1,14 +1,14 @@
 $(document).ready(function(){
   compileIndexNoteTemplate();
-  compileShowNoteTemplate();
   compileNewNoteTemplate();
+  compileShowNoteTemplate();
   compileEditNoteTemplate();
   newNote();
   createNote();
   showNote();
   editNote();
   updateNote();
-  deletenote();
+  deleteNote();
 });
 
 class Note {
@@ -52,6 +52,25 @@ function newNote() {
   });
 }
 
+function createNote() {
+  $(document).on("submit", ".create-note", function(event) {
+    event.preventDefault();
+    var values = $(this).serialize();
+    var url = $(event.target).attr('action');
+    $.ajax({
+      url:  url,
+      method: "POST",
+      dataType: 'JSON',
+      data: values
+    }).success(function(data) {
+      $("#new-note").html("");
+      var note = new Note(data);
+      var noteRender = note.renderIndexNote();
+      $(".notes-block").prepend(noteRender);
+    });
+  }); 
+}
+
 function showNote() {
   $(document).on("click", '.js-get-note', function(event) {
     event.preventDefault();
@@ -61,7 +80,7 @@ function showNote() {
       dataType: 'JSON'
     }).success(function(data) {
       var note = new Note(data);
-      var noteRender = note.renderIndexNote();
+      var noteRender = note.renderShowNote();
       $("#note-" + note.id).html("");
       $("#note-" + note.id).append(noteRender);
     });
@@ -103,7 +122,7 @@ function updateNote() {
       var note = new Note(data);
       $("#note-" + note.id).html("");
       $("#note-" + note.id).html(noteRender);
-      var noteRender = note.renderShowNote();
+      var noteRender = note.renderIndexNote();
       $(".notes-block").prepend(noteRender);
     });
   }); 
@@ -122,24 +141,6 @@ function deleteNote() {
     }).success(function(data) {
       var note = new Note(data);
       $("#note-" + note.id).html("");
-    });
-  }); 
-}
-
-function createNote() {
-  $(document).on("submit", ".create-note", function(event) {
-    event.preventDefault();
-    var values = $(this).serialize();
-    var url = $(event.target).attr('action');
-    $.ajax({
-      url:  url,
-      method: "POST",
-      dataType: 'JSON',
-      data: values
-    }).success(function(data) {
-      var note = new Note(data);
-      var noteRender = note.renderShowNote();
-      $(".notes-block").prepend(noteRender);
     });
   }); 
 }
@@ -165,7 +166,6 @@ function compileShowNoteTemplate(){
     showNoteTemplate = Handlebars.compile(showNoteSource); 
   }
 }
-
 
 // compile the handlebars EditComment template on load
 function compileEditNoteTemplate(){
