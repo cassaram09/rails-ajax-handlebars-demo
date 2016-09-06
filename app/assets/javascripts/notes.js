@@ -1,8 +1,10 @@
 $(document).ready(function(){
-  compileNoteTemplate();
+  compileIndexNoteTemplate();
+  compileShowNoteTemplate();
   compileNewNoteTemplate();
   compileEditNoteTemplate();
   newNote();
+  createNote();
   showNote();
   editNote();
   updateNote();
@@ -16,12 +18,16 @@ class Note {
   }
 
   // Render the handlebars template
-  renderNote() {
-    return noteTemplate(this);
+  renderIndexNote() {
+    return indexNoteTemplate(this);
   }
 
   renderNewNote(){
     return newNoteTemplate(this);
+  }
+
+  renderShowNote(){
+    return showNoteTemplate(this);
   }
 
   renderEditNote(){
@@ -54,7 +60,7 @@ function showNote() {
       dataType: 'JSON'
     }).success(function(data) {
       var note = new Note(data);
-      var noteRender = note.renderNote();
+      var noteRender = note.renderIndexNote();
       $("#note-" + note.id).html("");
       $("#note-" + note.id).append(noteRender);
     });
@@ -94,17 +100,37 @@ function updateNote() {
       data: values
     }).success(function(data) {
       var note = new Note(data);
-      var noteRender = note.renderNote();
+      $("#note-" + note.id).html("");
+      $("#note-" + note.id).html(noteRender);
+      var noteRender = note.renderShowNote();
+      $(".notes-block").prepend(noteRender);
+    });
+  }); 
+}
+
+function createNote() {
+  $(document).on("submit", ".create-note", function(event) {
+    event.preventDefault();
+    var values = $(this).serialize();
+    var url = $(event.target).attr('action');
+    $.ajax({
+      url:  url,
+      method: "POST",
+      dataType: 'JSON',
+      data: values
+    }).success(function(data) {
+      var note = new Note(data);
+      var noteRender = note.renderShowNote();
       $(".notes-block").prepend(noteRender);
     });
   }); 
 }
 
 // compile the handlebars template on document load
-function compileNoteTemplate(){
-  noteSource = $("#noteTemplate").html();
-  if ( noteSource !== undefined ) {
-    noteTemplate = Handlebars.compile(noteSource); 
+function compileIndexNoteTemplate(){
+  indexNoteSource = $("#indexNoteTemplate").html();
+  if ( indexNoteSource !== undefined ) {
+    indexNoteTemplate = Handlebars.compile(indexNoteSource); 
   }
 }
 
@@ -114,6 +140,14 @@ function compileNewNoteTemplate(){
     newNoteTemplate = Handlebars.compile(newNoteSource); 
   }
 }
+
+function compileShowNoteTemplate(){
+  showNoteSource = $("#showNoteTemplate").html();
+  if ( showNoteSource !== undefined ) {
+    showNoteTemplate = Handlebars.compile(showNoteSource); 
+  }
+}
+
 
 // compile the handlebars EditComment template on load
 function compileEditNoteTemplate(){

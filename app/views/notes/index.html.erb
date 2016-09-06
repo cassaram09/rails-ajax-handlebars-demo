@@ -1,5 +1,5 @@
 <h1>My Notes</h1>
-<h2> <%= link_to "New Note", new_note_path, class: "js-new-note" %>
+<h2> <%= link_to "New Note", new_note_path, class: "js-new-note" %></h2>
 
 <div id="new-note">
 </div>
@@ -7,7 +7,7 @@
 <hr></hr>
 
 <div class="notes-block">
-<% @notes.each do |note| %>
+<% @notes.reverse.each do |note| %>
   <div id="note-<%= note.id%>">
     <h2> <%= note.id %>. <%= note.title %> <%= link_to "View", note_path(note), class: "js-get-note" %> </h2>
     <br/>
@@ -15,8 +15,26 @@
 <% end %> 
 </div>
 
+<script id="indexNoteTemplate" type="text/x-handlebars-template">
+  <div class="note-template-js" id="note-{{id}}">
+    <h2>{{id}}. {{title}} </h2>
+    <p class="note-content">{{content}}</p>
+    <div class="inline-button">
+      <a href="/notes/{{id}}/edit" class="btn btn-sm btn-primary js-edit-note" id="edit-note-{{id}}">Edit</a>
+    </div>
+    <div class="inline-button"> 
+      <form class="button_to" method="post" action="/notes/{{id}}">
+        <input type="hidden" name="_method" value="delete" />
+        <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      </form>   
+    </div>
+    <div class="line-light"></div>
+  </div>
+</script>
+
 <script id="newNoteTemplate" type="text/x-handlebars-template">
-  <form class="new_note save-note" id="new_note" action="/notes/" accept-charset="UTF-8" method="post">
+  <form class="new_note create-note" id="new_note" action="/notes" accept-charset="UTF-8" method="post">
     <input name="utf8" type="hidden" value="&#x2713;" />
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
     <div class="form-group"> 
@@ -31,21 +49,10 @@
   </form>
 </script>
 
-<script id="noteTemplate" type="text/x-handlebars-template">
-  <div class="note-template-js" id="{{id}}">
-    <h2>{{id}}. {{title}} </h2>
-    <p class="note-content">{{content}}</p>
-    <div class="inline-button">
-      <a href="/notes/{{id}}/edit" class="btn btn-sm btn-primary js-edit-note" id="edit-note-{{id}}">Edit</a>
-    </div>
-    <div class="inline-button"> 
-      <form class="button_to" method="post" action="/notes/{{id}}">
-        <input type="hidden" name="_method" value="delete" />
-        <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      </form>   
-    </div>
-    <div class="line-light"></div>
+<script id="showNoteTemplate" type="text/x-handlebars-template">
+  <div class="note-template-js" id="note-{{id}}">
+    <h2>{{id}}. {{title}} <a href="notes/{{id}}" class="js-get-note">View</a></h2> 
+    <br/>
   </div>
 </script>
 
