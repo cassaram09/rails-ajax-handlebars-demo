@@ -39,11 +39,7 @@ class Note {
 function newNote() {
   $(document).on("click", '.js-new-note', function(event) {
     event.preventDefault();
-    $.ajax({
-      url: $(event.target).attr('href'),
-      method: "GET",
-      dataType: 'JSON'
-    }).success(function(data) {
+    $.get( $(event.target).attr('href'), function( data ) {
       var note = new Note(data);
       var noteRender = note.renderNewNote();
       $("#new-note").html("");
