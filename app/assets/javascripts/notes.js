@@ -65,11 +65,7 @@ function createNote() {
 function showNote() {
   $(document).on("click", '.js-get-note', function(event) {
     event.preventDefault();
-    $.ajax({
-      url: $(event.target).attr('href'),
-      method: "GET",
-      dataType: 'JSON'
-    }).success(function(data) {
+    $.get( $(event.target).attr('href'), function( data ) {
       var note = new Note(data);
       var noteRender = note.renderShowNote();
       $("#note-" + note.id).html("");
