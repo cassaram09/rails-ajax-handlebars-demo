@@ -8,6 +8,7 @@ $(document).ready(function(){
   showNote();
   editNote();
   updateNote();
+  deletenote();
 });
 
 class Note {
@@ -104,6 +105,23 @@ function updateNote() {
       $("#note-" + note.id).html(noteRender);
       var noteRender = note.renderShowNote();
       $(".notes-block").prepend(noteRender);
+    });
+  }); 
+}
+
+function deleteNote() {
+  $(document).on("submit", ".delete-note", function(event) {
+    event.preventDefault();
+    var values = $(this).serialize();
+    var url = $(event.target).attr('action');
+    $.ajax({
+      url:  url,
+      method: "POST",
+      dataType: 'JSON',
+      data: values
+    }).success(function(data) {
+      var note = new Note(data);
+      $("#note-" + note.id).html("");
     });
   }); 
 }
