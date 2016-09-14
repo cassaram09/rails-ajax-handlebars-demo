@@ -7,12 +7,6 @@
 <hr></hr>
 
 <div class="notes-block">
-<% @notes.reverse.each do |note| %>
-  <div id="note-<%= note.id%>">
-    <h2> <%= note.id %>. <%= note.title %> <%= link_to "View", note_path(note), class: "js-get-note" %> </h2>
-    <br/>
-  </div>
-<% end %> 
 </div>
 
 <script id="indexNoteTemplate" type="text/x-handlebars-template">
