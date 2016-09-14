@@ -3,10 +3,7 @@ class NotesController < ApplicationController
 
   def index
     @notes = Note.all
-    respond_to do |f|
-      f.html {render :index }
-      f.json {render json: @notes}
-    end
+    render json: @notes
   end
 
   def new
