@@ -3,6 +3,7 @@ $(document).ready(function(){
   compileNewNoteTemplate();
   compileShowNoteTemplate();
   compileEditNoteTemplate();
+  indexNotes();
   newNote();
   createNote();
   showNote();
@@ -34,6 +35,17 @@ class Note {
   renderEditNote(){
     return editNoteTemplate(this);
   }
+}
+
+function indexNotes() {
+  var url = window.location.pathname;
+  $.get(url, function(data) {
+    $.each(data, function(index, note){
+      var indexNote = new Note(note);
+      var indexNoteRender = indexNote.renderIndexNote();
+      $(".notes-block").prepend(indexNoteRender);
+    });
+  }, "json");
 }
 
 function newNote() {
